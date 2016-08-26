@@ -1,30 +1,32 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package threads;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 /**
- *
  * @author Joachim E. Christensen
  */
 public class Threads {
 
-    /**
-     * @param args the command line arguments
-     */
     static boolean stop = false;
+    static Even even = new Even();
     public static void main(String[] args) {
-        Thread1 r = new Thread1();
+        //Opgave 1
+        /*Thread1 r = new Thread1();
         Thread2 s = new Thread2();
         Thread3 t = new Thread3();
         r.start();
         s.start();
-        t.start();
+        t.start();*/
+        
+        //Opgave 2
+        Thread4 u = new Thread4();
+        Thread4 u2 = new Thread4();
+        u.start();
+        u2.start();
+        /*Problemet der opstår hvis man bare kalder den samme metode to gange,
+        er at tallet ikke bliver genstartet. Dette gør at man får to forskellige svar.
+        At holde sine strings i orden og synkroniseret er et normalt problem,
+        hvilket betyder der er indebyggede synkroniserings kommandoer.*/ 
     }
     static class Thread1 extends Thread{
         public void run(){
@@ -65,6 +67,11 @@ public class Threads {
                     Logger.getLogger(Threads.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
+        }
+    }
+    static class Thread4 extends Thread {
+        public void run() {
+            System.out.println(even.next());
         }
     }
 }
