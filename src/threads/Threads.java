@@ -11,22 +11,24 @@ public class Threads {
     static Even even = new Even();
     public static void main(String[] args) {
         //Opgave 1
-        /*Thread1 r = new Thread1();
+        Thread1 r = new Thread1();
         Thread2 s = new Thread2();
         Thread3 t = new Thread3();
         r.start();
         s.start();
-        t.start();*/
+        t.start();
         
         //Opgave 2
         Thread4 u = new Thread4();
         Thread4 u2 = new Thread4();
         u.start();
         u2.start();
-        /*Problemet der opstår hvis man bare kalder den samme metode to gange,
-        er at tallet ikke bliver genstartet. Dette gør at man får to forskellige svar.
-        At holde sine strings i orden og synkroniseret er et normalt problem,
-        hvilket betyder der er indebyggede synkroniserings kommandoer.*/ 
+        /*Problemet der opstår hvis man kalder den samme metode flere gange på samme tid,
+        er at der er stor chance for at man mister overblikket over hvornår hver af dem tager fat i den kaldte funktion.
+        Dette kaldes for 'race condition', fordi at de flere Threads racer for at få adgang.
+        Dette fikses ved at 'låse' funktionen så Threadsne bliver nød til at vente på hinanden.
+        Dette har jeg opnået ved at ændre min Even funktion til at have en Synkroniserings faktor.
+        Hvis man ikke holder styr på de metoder man bruger, vil man støde på 'race condition' ofte.*/ 
     }
     static class Thread1 extends Thread{
         public void run(){
@@ -71,7 +73,14 @@ public class Threads {
     }
     static class Thread4 extends Thread {
         public void run() {
-            System.out.println(even.next());
+            int counter = 0;
+            for (int i = 1; i <= 1000000; i++){
+                int e = even.next();
+                if (e % 2 != 0) {
+                    counter++;
+                }
+            }
+            System.out.println(counter);
         }
     }
 }
